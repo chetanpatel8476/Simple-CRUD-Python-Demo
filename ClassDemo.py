@@ -31,10 +31,10 @@ class Portal(Employee):
             else:
                 empValidId  = empId
                 loop_id = True
-        empName = input("%sEnter Employee Name:" %Portal.color_obj.setColor('blue'))
+        empName = input("%sEnter Employee Name:%s" % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('white')))
         l.update({"Name":empName})
         while loop_phone == False:
-            empPhone = input("%sEnter Employee Phone Number:" %Portal.color_obj.setColor('blue'))
+            empPhone = input("%sEnter Employee Phone Number:%s" % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('white')))
             phoneObj = re.search(r'\d{3}-\d{3}-\d{4}',empPhone)
             empValidPhone = ''
             if phoneObj:
@@ -48,7 +48,7 @@ class Portal(Employee):
             else:
                 print ("%sPlease enter phone details as xxx-xxx-xxxx format" %Portal.color_obj.setColor('red'))
         while loop_email == False:
-            empEmail = input("%sEnter Employee Email:" %Portal.color_obj.setColor('blue'))
+            empEmail = input("%sEnter Employee Email:%s" % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('white')))
             emailObj = re.search(r'[\w.]+@[\w.]+',empEmail)
             empValidEmail = ''
             if emailObj:
@@ -75,11 +75,12 @@ class Portal(Employee):
             self.createEmployeeDetails()
             print ("%sEmployee created successfully" %Portal.color_obj.setColor('green'))
             time.sleep(2)
-        print ("Employee Id List: ",list(Portal.database.keys()))
-        print ("\nNow process for update employee details")
+        print ("%sEmployee Id :" %Portal.color_obj.setColor('dark_green'),list(Portal.database.keys()))
+        time.sleep(1)
+        print ("\n%sNow process for update employee details" %Portal.color_obj.setColor('white'))
         time.sleep(2)
         while loop == False:
-            num = int(input("Enter employee id which you want to update: "))
+            num = int(input("%sEnter employee id which you want to update: " %Portal.color_obj.setColor('white')))
             if num in Portal.database:
                 self.selectOption(num)
                 print ("%sEmployee details updated successfully" %Portal.color_obj.setColor('green'))
@@ -87,7 +88,7 @@ class Portal(Employee):
                 print ('\n%sNow select option for another process' %Portal.color_obj.setColor('white'))
                 loop =True
             else:
-                print ("%sEmployee Id {} doesn't exists in employee id list".format(num) %Portal.color_obj.setColor('red'),Portal.database.keys())
+                print ("%sEmployee Id {} doesn't exists in employee id list".format(num) %Portal.color_obj.setColor('red'),list(Portal.database.keys()))
     
     def selectOption(self,num):
         loop_phone_data = False
@@ -99,51 +100,62 @@ class Portal(Employee):
         Email
         ''' %Portal.color_obj.setColor('orange'))
         print ("\n%sNOTE: Please select option as per format like option1,option2,option3,etc..." %Portal.color_obj.setColor('orange'))
-        option = (input("Enter Options :")).split(',')
+        option = (input("%sEnter Options :%s" % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('white')))).split(',')
         for i in option:
             if i == "name" or i == "Name":
-                name = input("Enter name which you want to update:")
+                name = input("%sEnter name which you want to update:%s" % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('white')))
                 record.update({'Name':name})
             elif i == "phone" or i == "Phone":
                 while loop_phone_data == False:
-                    phone = input("Enter phone which you want to update:")
+                    phone = input("%sEnter phone which you want to update:%s" % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('white')))
                     phoneData = re.search(r'\d{3}-\d{3}-\d{4}',phone)
                     empValidPhoneData = ''
                     if phoneData:
                         empValidPhoneData = phone
                         empValidPhoneData = self.checkPhoneValidation(empValidPhoneData)
                         if empValidPhoneData == None:
-                            print ("Phone number",phone,"which you entered is already exists")
+                            print ("%sPhone number {} which you entered is already exists".format(phone) %Portal.color_obj.setColor('red'))
                         else:
                             record.update({'Phone':empValidPhoneData})
                             loop_phone_data = True
                     else:
-                        print ("Please enter phone details as xxx-xxx-xxxx format")
+                        print ("%sPlease enter phone details as xxx-xxx-xxxx format" %Portal.color_obj.setColor('red'))
             elif i == "email" or i == "Email":
                 while loop_email_data == False:
-                    email = input("Enter email which you want to update:")
+                    email = input("%sEnter email which you want to update:%s" % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('white')))
                     emailData = re.search(r'[\w.]+@[\w.]+',email)
                     empValidEmailData = ''
                     if emailData:
                         empValidEmailData = email
                         empValidEmailData = self.checkEmailValidation(empValidEmailData)
                         if empValidEmailData == None:
-                            print ("Email id",email,"which you entered is already exists")
+                            print ("%sEmail id {} which you entered is already exists".format(email) %Portal.color_obj.setColor('red'))
                         else:
                             record.update({'Email':empValidEmailData})
                             loop_email_data = True
                     else:
-                        print ("Please enter email details as xxx@xxx.xxx format")
+                        print ("%sPlease enter email details as xxx@xxx.xxx format" %Portal.color_obj.setColor('red'))
             else:
-                print ("Select valid options")
+                print ("%sSelect valid options" %Portal.color_obj.setColor('red'))
                 time.sleep(2)
                 return self.selectOption(num)
-    
+
+    def getEmployeeDetailsById(self):
+        loop_data = False
+        while loop_data == False:
+            data = int(input('%sEnter employee id:%s' % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('white'))))
+            if data in Portal.database:
+               print ("%sEmployee details for employeeId {}:%s".format(data) % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('green')),Portal.database.get(data))
+               loop_data = True
+            else:
+               print ("%sEmployee Id {} doesn't exist from employee list".format(data) %Portal.color_obj.setColor('red'))
+        time.sleep(2)
+
     def printAllEmployee(self,database):
         if not Portal.database.items():
-            print ("No Any Records Available, Please Create Employee Details")
+            print ("%sNo record found in employee list" %Portal.color_obj.setColor('red'))
         else:
-            print ("All Employee Details:",database)
+            print ("%sAll Employee Details:%s" % (Portal.color_obj.setColor('blue'), Portal.color_obj.setColor('green')),database)
         time.sleep(2)
         
     def deleteEmployeeDetails(self):
@@ -154,17 +166,17 @@ class Portal(Employee):
             print ("\nProcess for creating new employee")
             time.sleep(2)
             self.createEmployeeDetails()
-            print ("Employee created successfully")
+            print ("%sEmployee created successfully" %Portal.color_obj.setColor('green'))
             time.sleep(2)
-            print ("\nNow Process for delete existing employee record")
+            print ("\n%sNow Process for delete existing employee record" %Portal.color_obj.setColor('white'))
         while loop_data == False:
-            data = int(input('Enter employee id:'))
+            data = int(input('%sEnter employee id:' %Portal.color_obj.setColor('blue')))
             if data in Portal.database:
                 Portal.database.pop(data)
-                print ("Employee id",data,"deleted successfully")
+                print ("Employee id {} deleted successfully from employee list".format(data) %Portal.color_obj.setColor('green'))
                 loop_data = True
             else:
-                print ("No record found")
+                print ("%sNo record found" %Portal.color_obj.setColor('red'))
     
     def checkPhoneValidation(self,empValidPhone):
         record = {}

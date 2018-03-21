@@ -13,4 +13,6 @@ class Color:
 			return fg(4)
 		elif color == 'orange':
 			return fg(208)
+		elif color == 'dark_green':
+			return fg(22)
 	
